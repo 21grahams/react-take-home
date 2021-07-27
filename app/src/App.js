@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import DataMap from "./DataMap";
+import "./App.css";
 
 function App() {
+
+  const [campaigns, setCampaigns] = useState([]);
+
+  const getAllData = () => {
+    axios.get('https://www.plugco.in/public/take_home_sample_feed')
+      .then(res => setCampaigns(res.data))
+      .catch(err => console.log('error with get request: ', err));
+  }
+
+    useEffect(() => {
+      getAllData();
+    }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <DataMap campaigns={campaigns}/>
     </div>
-  );
+  )
 }
 
 export default App;
